@@ -97,6 +97,10 @@ class _TourOverlayState extends State<TourOverlay>
     }
   }
 
+  void _prev() {
+    if (_currentIndex > 0) _goTo(_currentIndex - 1);
+  }
+
   void _skip() {
     widget.onSkip?.call();
     widget.onDone();
@@ -159,6 +163,7 @@ class _TourOverlayState extends State<TourOverlay>
       total: widget.steps.length,
       isLast: isLast,
       onNext: _next,
+      onPrev: _currentIndex > 0 ? _prev : null,
       onSkip: _skip,
     );
 
@@ -262,6 +267,7 @@ class _TooltipCard extends StatelessWidget {
   final int total;
   final bool isLast;
   final VoidCallback onNext;
+  final VoidCallback? onPrev;
   final VoidCallback onSkip;
 
   const _TooltipCard({
@@ -272,6 +278,7 @@ class _TooltipCard extends StatelessWidget {
     required this.isLast,
     required this.onNext,
     required this.onSkip,
+    this.onPrev,
   });
 
   @override
@@ -310,10 +317,11 @@ class _TooltipCard extends StatelessWidget {
           const SizedBox(height: 6),
           Text(step.body, style: theme.bodyStyle),
           const SizedBox(height: 14),
-          // Progress dots + Next/Done button
-          Row(
-            children: [
-              ...List.generate(total, (i) {
+          // Progress dots
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(total, (i) {
                 final active = i == currentIndex;
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
@@ -321,20 +329,48 @@ class _TooltipCard extends StatelessWidget {
                   width: active ? 16 : 6,
                   height: 6,
                   decoration: BoxDecoration(
-                    color: active
-                        ? theme.accentColor
-                        : const Color(0xFFCCCCCC),
+                    color: active ? theme.accentColor : const Color(0xFFCCCCCC),
                     borderRadius: BorderRadius.circular(99),
                   ),
                 );
               }),
-              const Spacer(),
+            ),
+          ),
+          const SizedBox(height: 12),
+          // Prev / Next buttons
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (onPrev != null)
+                GestureDetector(
+                  onTap: onPrev,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: theme.accentColor, width: 1.5),
+                      borderRadius: BorderRadius.circular(99),
+                    ),
+                    child: Text(
+                      'Prev',
+                      style: TextStyle(
+                        color: theme.accentColor,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                const SizedBox.shrink(),
               GestureDetector(
                 onTap: onNext,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 18,
-                    vertical: 9,
+                    vertical: 6,
                   ),
                   decoration: BoxDecoration(
                     color: theme.accentColor,
@@ -342,7 +378,7 @@ class _TooltipCard extends StatelessWidget {
                   ),
                   child: Text(
                     isLast ? 'Done' : 'Next',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,

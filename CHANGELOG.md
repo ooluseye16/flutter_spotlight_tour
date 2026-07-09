@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Add "Prev" button — an outlined button appears from step 2 onward so users can navigate backwards.
+
 ## 0.1.1
 
 - Fix README screenshot URLs to use absolute GitHub raw paths so images render on pub.dev.

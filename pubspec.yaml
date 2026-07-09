@@ -1,6 +1,6 @@
 name: flutter_tour_guide
 description: A lightweight, themeable Flutter tour guide with spotlight cutouts, auto-scroll, tab/page navigation, and per-screen persistence.
-version: 0.1.1
+version: 0.1.2
 homepage: https://github.com/ooluseye16/flutter_tour_guide
 repository: https://github.com/ooluseye16/flutter_tour_guide
 issue_tracker: https://github.com/ooluseye16/flutter_tour_guide/issues
