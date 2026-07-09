@@ -18,6 +18,7 @@ A lightweight, themeable Flutter onboarding tour with spotlight cutouts, animate
 - **Persistent "seen" state** — uses `shared_preferences` so tours don't re-appear after the first view
 - **Fully themeable** — override accent color, scrim opacity, card styles, spotlight shape, and more
 - **Restart / reset API** — reset one tour or all tours (e.g., from a settings screen)
+- **Prev / Next navigation** — back button appears automatically from step 2 onward
 - **Fade animations** — smooth entrance/exit between steps
 
 ---
@@ -28,7 +29,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_tour_guide: ^0.1.0
+  flutter_tour_guide: ^0.1.2
 ```
 
 Then run:
